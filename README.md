@@ -10,9 +10,9 @@ Apprenticeship Connect connects to the UK Government's Display Advert API to pul
 - **Easy Onboarding**: A step-by-step setup wizard guides you through the configuration process.
 - **API Integration**: Connects to the UK Government apprenticeship API to fetch the latest vacancies.
 - **Automated Syncing**: A daily WP-Cron job keeps your vacancy listings up-to-date automatically.
-- **Manual Control**: A "Test & Sync" button in the settings allows for on-demand API testing and data synchronization.
+- **Manual Control**: A "Test & Sync" button in the settings allows for on-demand API testing and data synchronisation.
 - **Simple Shortcode**: Use `[apprenticeship_vacancies]` to display listings on any page or post.
-- **Customizable Display**: Control which vacancy details (employer, location, closing date) are shown directly from the settings page.
+- **Customisable Display**: Control which vacancy details (employer, location, closing date) are shown directly from the settings page.
 
 ## Installation
 
@@ -43,7 +43,7 @@ Configure how vacancies are displayed from the **Apprenticeship Connect > Settin
 
 ### Shortcode
 
-Use the shortcode `[apprenticeship_vacancies]` to display vacancies on any page or post. The shortcode does not accept any parameters; all display settings are managed from the plugin's settings page to keep configuration simple and centralized.
+Use the shortcode `[apprenticeship_vacancies]` to display vacancies on any page or post. The shortcode does not accept any parameters; all display settings are managed from the plugin's settings page to keep configuration simple and centralised.
 
 ### Automatic Sync
 
@@ -75,7 +75,7 @@ Yes. The vacancy listings are output with specific CSS classes (e.g., `.aprcn-va
 ### 1.1.0
 - Initial public release.
 - Features a step-by-step Setup Wizard for easy configuration.
-- Includes a "Test & Sync" button for on-demand API testing and synchronization.
+- Includes a "Test & Sync" button for on-demand API testing and synchronisation.
 - Implements a daily cron job for automatic vacancy updates.
 - Provides a `[apprenticeship_vacancies]` shortcode for displaying listings.
 

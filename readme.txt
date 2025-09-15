@@ -11,15 +11,15 @@ License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
 Seamlessly display apprenticeship vacancies from the official UK Government service via a simple shortcode and automated syncing.
 == Description ==
-Apprenticeship Connect integrates with the official UK Government's Find an Apprenticeship service to fetch and display current apprenticeship vacancies on your WordPress site. It provides a setup wizard for easy configuration, automated daily data synchronization, and a simple shortcode to place vacancy listings anywhere on your site.
+Apprenticeship Connect integrates with the official UK Government's Find an Apprenticeship service to fetch and display current apprenticeship vacancies on your WordPress site. It provides a setup wizard for easy configuration, automated daily data synchronisation, and a simple shortcode to place vacancy listings anywhere on your site.
 
 Features:
 - **Easy Onboarding:** A step-by-step setup wizard guides you through the configuration process.
 - **API Integration:** Connects to the UK Government apprenticeship API to fetch the latest vacancies.
 - **Automated Syncing:** A daily WP-Cron job keeps your vacancy listings up-to-date automatically.
-- **Manual Control:** A "Test & Sync" button in the settings allows for on-demand API testing and data synchronization.
+- **Manual Control:** A "Test & Sync" button in the settings allows for on-demand API testing and data synchronisation.
 - **Simple Shortcode:** Use `[apprenticeship_vacancies]` to display listings on any page or post.
-- **Customizable Display:** Control which vacancy details (employer, location, closing date) are shown directly from the settings page.
+- **Customisable Display:** Control which vacancy details (employer, location, closing date) are shown directly from the settings page.
 
 Shortcode:
 - Use `[apprenticeship_vacancies]` on any page. The output is controlled by the options configured on the **Settings** page.
@@ -44,7 +44,7 @@ The plugin schedules a daily sync via WP-Cron. You can also click the **Test & S
 Yes. You can configure the default display count and the visibility of the employer, location, closing date, and apply button from the **Apprenticeship Connect > Settings** page.
 
 = Does the shortcode accept parameters? =
-No. To keep configuration simple and centralized, the shortcode does not accept parameters. All display options are managed from the plugin's **Settings** page.
+No. To keep configuration simple and centralised, the shortcode does not accept parameters. All display options are managed from the plugin's **Settings** page.
 
 == Screenshots ==
 1. The main settings page where you can configure API credentials and display options.
@@ -56,7 +56,7 @@ No. To keep configuration simple and centralized, the shortcode does not accept 
 = 1.1.0 =
 - Initial public release.
 - Features a step-by-step Setup Wizard for easy configuration.
-- Includes a "Test & Sync" button for on-demand API testing and synchronization.
+- Includes a "Test & Sync" button for on-demand API testing and synchronisation.
 - Implements a daily cron job for automatic vacancy updates.
 - Provides a `[apprenticeship_vacancies]` shortcode for displaying listings.
 
