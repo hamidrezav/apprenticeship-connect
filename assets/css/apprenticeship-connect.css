@@ -1,0 +1,367 @@
+/**
+ * Apprenticeship Connect Styles
+ */
+
+/* Frontend Styles */
+.aprcn-vacancies-list {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px 0;
+}
+
+.aprcn-vacancy-item {
+    background: #fff;
+    border: 1px solid #e1e1e1;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: box-shadow 0.3s ease;
+}
+
+.aprcn-vacancy-item:hover {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.aprcn-vacancy-item h3 {
+    margin: 0 0 15px 0;
+    font-size: 1.4em;
+    color: #333;
+}
+
+.aprcn-vacancy-item h3 a {
+    color: #0073aa;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.aprcn-vacancy-item h3 a:hover {
+    color: #005a87;
+}
+
+.aprcn-employer {
+    margin: 10px 0;
+    color: #666;
+    font-size: 0.95em;
+}
+
+.aprcn-description {
+    margin: 15px 0;
+    line-height: 1.6;
+    color: #555;
+}
+
+.aprcn-closing-date {
+    margin: 10px 0;
+    color: #d63638;
+    font-weight: 600;
+    font-size: 0.9em;
+}
+
+.aprcn-apply-link {
+    margin: 15px 0 0 0;
+}
+
+.aprcn-apply-button {
+    display: inline-block;
+    background: #0073aa;
+    color: #fff;
+    padding: 10px 20px;
+    text-decoration: none;
+    border-radius: 4px;
+    font-weight: 600;
+    transition: background-color 0.3s ease;
+}
+
+.aprcn-apply-button:hover {
+    background: #005a87;
+    color: #fff;
+    text-decoration: none;
+}
+
+/* Admin Styles */
+.aprcn-admin-container {
+    display: flex;
+    gap: 30px;
+    margin-top: 20px;
+}
+
+.aprcn-admin-main {
+    flex: 2;
+}
+
+.aprcn-admin-sidebar {
+    flex: 1;
+    max-width: 400px;
+}
+
+.aprcn-status-box,
+.aprcn-shortcode-box {
+    background: #fff;
+    border: 1px solid #ccd0d4;
+    border-radius: 4px;
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+.aprcn-status-box h3,
+.aprcn-shortcode-box h3 {
+    margin-top: 0;
+    color: #23282d;
+}
+
+.aprcn-status-ok {
+    color: #46b450;
+    font-weight: bold;
+}
+
+.aprcn-status-error {
+    color: #dc3232;
+    font-weight: bold;
+}
+
+.aprcn-actions {
+    margin-top: 15px;
+}
+
+.aprcn-actions .button {
+    margin-right: 10px;
+}
+
+.aprcn-shortcode-box code {
+    background: #f1f1f1;
+    padding: 5px 8px;
+    border-radius: 3px;
+    font-size: 0.9em;
+}
+
+.aprcn-shortcode-box ul {
+    margin: 10px 0;
+    padding-left: 20px;
+}
+
+.aprcn-shortcode-box li {
+    margin-bottom: 5px;
+}
+
+/* Setup Wizard Styles */
+.aprcn-setup-progress {
+    display: flex;
+    justify-content: space-between;
+    margin: 30px 0;
+    background: #f1f1f1;
+    border-radius: 4px;
+    padding: 10px;
+}
+
+.aprcn-step {
+    flex: 1;
+    text-align: center;
+    padding: 10px;
+    color: #666;
+    font-weight: 500;
+}
+
+.aprcn-step.active {
+    background: #0073aa;
+    color: #fff;
+    border-radius: 4px;
+}
+
+.aprcn-setup-content {
+    background: #fff;
+    border: 1px solid #ccd0d4;
+    border-radius: 4px;
+    padding: 30px;
+    margin-top: 20px;
+}
+
+.aprcn-setup-step h2 {
+    margin-top: 0;
+    color: #23282d;
+}
+
+.aprcn-setup-intro {
+    margin: 20px 0;
+}
+
+.aprcn-setup-intro ul {
+    margin: 15px 0;
+    padding-left: 20px;
+}
+
+.aprcn-setup-intro li {
+    margin-bottom: 8px;
+}
+
+.aprcn-setup-actions {
+    margin-top: 30px;
+    text-align: right;
+}
+
+.aprcn-setup-actions .button {
+    margin-left: 10px;
+}
+
+.aprcn-setup-success {
+    background: #f0f8ff;
+    border: 1px solid #0073aa;
+    border-radius: 4px;
+    padding: 20px;
+    margin: 20px 0;
+}
+
+.aprcn-setup-success h3 {
+    margin-top: 0;
+    color: #0073aa;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .aprcn-admin-container {
+        flex-direction: column;
+    }
+    
+    .aprcn-admin-sidebar {
+        max-width: none;
+    }
+    
+    .aprcn-setup-progress {
+        flex-direction: column;
+        gap: 5px;
+    }
+    
+    .aprcn-step {
+        text-align: left;
+        padding: 8px 15px;
+    }
+}
+
+/* Loading States */
+.aprcn-loading {
+    opacity: 0.6;
+    pointer-events: none;
+}
+
+.aprcn-loading::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 20px;
+    height: 20px;
+    margin: -10px 0 0 -10px;
+    border: 2px solid #f3f3f3;
+    border-top: 2px solid #0073aa;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Notices */
+.aprcn-notice {
+    padding: 12px;
+    margin: 15px 0;
+    border-radius: 4px;
+    border-left: 4px solid;
+}
+
+.aprcn-notice-success {
+    background: #f0f8ff;
+    border-color: #46b450;
+    color: #155724;
+}
+
+.aprcn-notice-error {
+    background: #fdf2f2;
+    border-color: #dc3232;
+    color: #721c24;
+}
+
+.aprcn-notice-warning {
+    background: #fff3cd;
+    border-color: #ffc107;
+    color: #856404;
+}
+
+.aprcn-notice-info {
+    background: #d1ecf1;
+    border-color: #17a2b8;
+    color: #0c5460;
+} 
+
+/* Admin Settings UI */
+.wrap.aprcn-settings .aprcn-form {
+  max-width: 900px;
+  background: #fff;
+  padding: 20px 24px;
+  border: 1px solid #e2e4e7;
+  border-radius: 6px;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.04);
+}
+
+.wrap.aprcn-settings h1 {
+  margin-bottom: 16px;
+}
+
+.wrap.aprcn-settings .form-table th {
+  width: 260px;
+  padding-top: 16px;
+}
+
+.wrap.aprcn-settings .form-table td {
+  padding-top: 12px;
+}
+
+.wrap.aprcn-settings .form-table input[type="text"],
+.wrap.aprcn-settings .form-table input[type="url"],
+.wrap.aprcn-settings .form-table input[type="number"] {
+  width: 100%;
+  max-width: 480px;
+}
+
+.aprcn-shortcode-inline code {
+  background: #f6f7f7;
+  padding: 6px 10px;
+  border-radius: 4px;
+  display: inline-block;
+  margin: 6px 0;
+}
+
+#aprcn-test-and-sync.button.button-primary {
+  margin-top: 6px;
+} 
+
+/* Setup Wizard Progress */
+.ac-setup-progress {
+  display: flex;
+  gap: 12px;
+  margin: 12px 0 20px;
+}
+.ac-setup-progress .ac-step {
+  position: relative;
+  padding: 8px 12px;
+  background: #f6f7f7;
+  border: 1px solid #e2e4e7;
+  border-radius: 20px;
+  font-weight: 600;
+  color: #6c7781;
+}
+.ac-setup-progress .ac-step.current {
+  background: #2271b1;
+  border-color: #2271b1;
+  color: #fff;
+}
+.ac-setup-progress .ac-step.completed {
+  background: #e7f5ee;
+  border-color: #c6e8d5;
+  color: #1e7f4f;
+}
+.ac-setup-progress .ac-step .ac-step-index {
+  opacity: 0.8;
+  margin-right: 4px;
+} 
