@@ -5,21 +5,7 @@
  * @package ApprenticeshipConnect
  */
 
-// Define ABSPATH if not already defined
-if ( ! defined( 'ABSPATH' ) ) {
-    define( 'ABSPATH', dirname(__FILE__) . '/' );
-}
-
-// Ensure the plugin runs only within the WordPress environment
-if ( ! defined( 'ABSPATH' ) ) {
-    exit;
-}
-
-// Ensure WordPress functions are loaded
-if ( ! function_exists( 'add_action' ) ) {
-    require_once ABSPATH . 'wp-includes/pluggable.php';
-    require_once ABSPATH . 'wp-admin/includes/plugin.php';
-}
+if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
 /**
  * Main plugin functionality class

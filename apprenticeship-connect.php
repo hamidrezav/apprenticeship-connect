@@ -19,16 +19,7 @@
  * @author ePark Team
  */
 
-// Exit if accessed directly
-if ( ! defined( 'ABSPATH' ) ) {
-    exit;
-}
-
-// Ensure WordPress functions are loaded
-if ( ! function_exists( 'add_action' ) ) {
-    require_once ABSPATH . 'wp-includes/pluggable.php';
-    require_once ABSPATH . 'wp-admin/includes/plugin.php';
-}
+if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
 // Define plugin constants
 define( 'APRCN_PLUGIN_VERSION', '1.1.0' );

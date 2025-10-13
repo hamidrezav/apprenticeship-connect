@@ -5,19 +5,7 @@
  * @package ApprenticeshipConnect
  */
 
-// Ensure WordPress environment is loaded
-if ( ! defined( 'ABSPATH' ) ) {
-    exit;
-}
-
-// Ensure WordPress functions are loaded
-if ( ! function_exists( 'add_action' ) ) {
-    require_once ABSPATH . 'wp-includes/pluggable.php';
-    require_once ABSPATH . 'wp-admin/includes/plugin.php';
-}
-
-// Include necessary WordPress files
-require_once ABSPATH . 'wp-includes/functions.php';
+if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
 /**
  * Setup wizard class

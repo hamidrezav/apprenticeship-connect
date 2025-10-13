@@ -5,16 +5,7 @@
  * @package ApprenticeshipConnect
  */
 
-// Ensure WordPress environment is loaded
-if ( ! defined( 'ABSPATH' ) ) {
-    exit;
-}
-
-// Include WordPress core files if necessary
-if ( ! function_exists( 'add_action' ) ) {
-    require_once ABSPATH . 'wp-includes/pluggable.php';
-    require_once ABSPATH . 'wp-admin/includes/plugin.php';
-}
+if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
 // Include the core class file to make it available for AJAX handlers
 require_once APRCN_PLUGIN_DIR . 'includes/class-apprenticeship-connect.php';
