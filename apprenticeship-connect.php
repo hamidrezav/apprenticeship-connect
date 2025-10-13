@@ -3,7 +3,7 @@
  * Plugin Name: Apprenticeship Connect
  * Plugin URI: https://wordpress.org/plugins/apprenticeship-connect
  * Description: Apprenticeship Connect is a WordPress plugin that seamlessly integrates with the official UK Government's Find an Apprenticeship service. Easily display the latest apprenticeship vacancies on your website, keeping your audience informed and engaged with up-to-date opportunities.
- * Version: 1.1.0
+ * Version: 1.1.1
  * Author: ePark Team
  * Author URI: https://e-park.uk
  * License: GPL v2 or later
