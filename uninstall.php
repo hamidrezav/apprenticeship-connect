@@ -6,6 +6,7 @@
  * It removes all plugin data from the database.
  *
  * @package ApprenticeshipConnect
+ * @version 1.1.2
  */
 
 // Exit if accessed directly

@@ -18,17 +18,17 @@ Features:
 - **API Integration:** Connects to the UK Government apprenticeship API to fetch the latest vacancies.
 - **Automated Syncing:** A daily WP-Cron job keeps your vacancy listings up-to-date automatically.
 - **Manual Control:** A "Test & Sync" button in the settings allows for on-demand API testing and data synchronisation.
-- **Simple Shortcode:** Use `[apprenticeship_vacancies]` to display listings on any page or post.
+- **Simple Shortcode:** Use `[apprco_vacancies]` to display listings on any page or post.
 - **Customisable Display:** Control which vacancy details (employer, location, closing date) are shown directly from the settings page.
 
 Shortcode:
-- Use `[apprenticeship_vacancies]` on any page. The output is controlled by the options configured on the **Settings** page.
+- Use `[apprco_vacancies]` on any page. The output is controlled by the options configured on the **Settings** page.
 
 == Installation ==
 1. Upload the `apprenticeship-connect` folder to the `/wp-content/plugins/` directory, or install the plugin through the WordPress 'Plugins' screen directly.
 2. Activate the plugin through the 'Plugins' screen in WordPress.
 3. You will be automatically redirected to the **Setup Wizard**. Follow the steps to configure your API credentials and display settings.
-4. Add the shortcode `[apprenticeship_vacancies]` to any page to display vacancies.
+4. Add the shortcode `[apprco_vacancies]` to any page to display vacancies.
 
 == Frequently Asked Questions ==
 = Where do I get the API Subscription Key? =
@@ -62,7 +62,7 @@ No. To keep configuration simple and centralised, the shortcode does not accept 
 - Features a step-by-step Setup Wizard for easy configuration.
 - Includes a "Test & Sync" button for on-demand API testing and synchronisation.
 - Implements a daily cron job for automatic vacancy updates.
-- Provides a `[apprenticeship_vacancies]` shortcode for displaying listings.
+- Provides a `[apprco_vacancies]` shortcode for displaying listings.
 
 == Upgrade Notice ==
 = 1.1.2 =
@@ -70,4 +70,4 @@ No. To keep configuration simple and centralised, the shortcode does not accept 
 = 1.1.1 =
 - This version addresses feedback from the WordPress plugin review team.
 = 1.1.0 =
-Initial public release with Setup Wizard and Test & Sync. 
+Initial public release with Setup Wizard and Test & Sync.

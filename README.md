@@ -11,7 +11,7 @@ Apprenticeship Connect connects to the UK Government's Display Advert API to pul
 - **API Integration**: Connects to the UK Government apprenticeship API to fetch the latest vacancies.
 - **Automated Syncing**: A daily WP-Cron job keeps your vacancy listings up-to-date automatically.
 - **Manual Control**: A "Test & Sync" button in the settings allows for on-demand API testing and data synchronisation.
-- **Simple Shortcode**: Use `[apprenticeship_vacancies]` to display listings on any page or post.
+- **Simple Shortcode**: Use `[apprco_vacancies]` to display listings on any page or post.
 - **Customisable Display**: Control which vacancy details (employer, location, closing date) are shown directly from the settings page.
 
 ## Installation
@@ -19,7 +19,7 @@ Apprenticeship Connect connects to the UK Government's Display Advert API to pul
 1. Upload the `apprenticeship-connect` folder to the `/wp-content/plugins/` directory
 2. Activate the plugin through the 'Plugins' menu in WordPress
 3. You will be automatically redirected to the **Setup Wizard**. Follow the steps to configure your API credentials and display settings.
-4. Use the shortcode `[apprenticeship_vacancies]` to display vacancies on any page
+4. Use the shortcode `[apprco_vacancies]` to display vacancies on any page
 
 ## Configuration
 
@@ -43,7 +43,7 @@ Configure how vacancies are displayed from the **Apprenticeship Connect > Settin
 
 ### Shortcode
 
-Use the shortcode `[apprenticeship_vacancies]` to display vacancies on any page or post. The shortcode does not accept any parameters; all display settings are managed from the plugin's settings page to keep configuration simple and centralised.
+Use the shortcode `[apprco_vacancies]` to display vacancies on any page or post. The shortcode does not accept any parameters; all display settings are managed from the plugin's settings page to keep configuration simple and centralised.
 
 ### Automatic Sync
 
@@ -83,7 +83,7 @@ Yes. The vacancy listings are output with specific CSS classes (e.g., `.apprco-v
 - Features a step-by-step Setup Wizard for easy configuration.
 - Includes a "Test & Sync" button for on-demand API testing and synchronisation.
 - Implements a daily cron job for automatic vacancy updates.
-- Provides a `[apprenticeship_vacancies]` shortcode for displaying listings.
+- Provides a `[apprco_vacancies]` shortcode for displaying listings.
 
 ## Upgrade Notice
 
@@ -113,4 +113,4 @@ Developed by ePark Team.
 
 ---
 
-**Get started with Apprenticeship Connect today and help connect aspiring apprentices with their next great opportunity!** 
+**Get started with Apprenticeship Connect today and help connect aspiring apprentices with their next great opportunity!**

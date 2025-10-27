@@ -553,7 +553,7 @@ msgid "You can manually sync from the main plugin page"
 msgstr ""
 
 #: includes/class-apprenticeship-connect-setup-wizard.php:270
-msgid "Use the shortcode [apprenticeship_vacancies] to display vacancies anywhere"
+msgid "Use the shortcode [apprco_vacancies] to display vacancies anywhere"
 msgstr ""
 
 #: includes/class-apprenticeship-connect-setup-wizard.php:272

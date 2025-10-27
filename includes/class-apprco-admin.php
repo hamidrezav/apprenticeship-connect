@@ -3,6 +3,7 @@
  * Admin functionality class
  *
  * @package ApprenticeshipConnect
+ * @version 1.1.2
  */
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly

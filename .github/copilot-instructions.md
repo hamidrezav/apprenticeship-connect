@@ -20,13 +20,13 @@ This WordPress plugin integrates with the UK Government's Find an Apprenticeship
   - Daily WP-Cron job fetches vacancies from the UK Government API and stores them as custom post type `vacancy`.
   - Manual sync can be triggered from the admin panel (AJAX via `admin.js`).
 - **Display:**
-  - Vacancies are rendered via the `[apprenticeship_vacancies]` shortcode, using display settings from plugin options.
+  - Vacancies are rendered via the `[apprco_vacancies]` shortcode, using display settings from plugin options.
 
 ## Developer Workflows
 - **Activation:**
   - On activation, creates DB table `wp_apprenticeship_data` for vacancy references.
 - **Manual Sync:**
-  - Triggered via admin panel button (`#aprcn-manual-sync`), uses AJAX (`aprcn_manual_sync` action).
+  - Triggered via admin panel button (`#apprco-manual-sync`), uses AJAX (`apprco_manual_sync` action).
 - **Testing API:**
   - Admin panel includes API connection test.
 - **Debugging:**
@@ -34,7 +34,7 @@ This WordPress plugin integrates with the UK Government's Find an Apprenticeship
 
 ## Project-Specific Conventions
 - **Settings:**
-  - All display and API settings stored in `aprcn_plugin_options`.
+  - All display and API settings stored in `apprco_plugin_options`.
 - **Shortcode Parameters:**
   - Only settings from the admin panel are used; shortcode parameters are ignored in rendering.
 - **Custom Post Type:**
