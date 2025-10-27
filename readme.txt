@@ -5,7 +5,7 @@ Tags: apprenticeships, vacancies, jobs, api, uk
 Requires at least: 5.0
 Tested up to: 6.8
 Requires PHP: 7.4
-Stable tag: 1.1.1
+Stable tag: 1.1.2
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -53,6 +53,10 @@ No. To keep configuration simple and centralised, the shortcode does not accept 
 4. An example of how the vacancy listings appear on the front-end of your website.
 
 == Changelog ==
+= 1.1.2 =
+- Fix: Plugin review feedback changes.
+= 1.1.1 =
+- Fix: Plugin review feedback changes.
 = 1.1.0 =
 - Initial public release.
 - Features a step-by-step Setup Wizard for easy configuration.
@@ -61,5 +65,9 @@ No. To keep configuration simple and centralised, the shortcode does not accept 
 - Provides a `[apprenticeship_vacancies]` shortcode for displaying listings.
 
 == Upgrade Notice ==
+= 1.1.2 =
+- This version addresses feedback from the WordPress plugin review team.
+= 1.1.1 =
+- This version addresses feedback from the WordPress plugin review team.
 = 1.1.0 =
 Initial public release with Setup Wizard and Test & Sync. 

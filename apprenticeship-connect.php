@@ -3,7 +3,7 @@
  * Plugin Name: Apprenticeship Connect
  * Plugin URI: https://wordpress.org/plugins/apprenticeship-connect
  * Description: Apprenticeship Connect is a WordPress plugin that seamlessly integrates with the official UK Government's Find an Apprenticeship service. Easily display the latest apprenticeship vacancies on your website, keeping your audience informed and engaged with up-to-date opportunities.
- * Version: 1.1.1
+ * Version: 1.1.2
  * Author: ePark Team
  * Author URI: https://e-park.uk
  * License: GPL v2 or later
@@ -15,28 +15,28 @@
  * Requires PHP: 7.4
  *
  * @package ApprenticeshipConnect
- * @version 1.1.0
+ * @version 1.1.2
  * @author ePark Team
  */
 
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
 // Define plugin constants
-define( 'APRCN_PLUGIN_VERSION', '1.1.0' );
-define( 'APRCN_PLUGIN_FILE', __FILE__ );
-define( 'APRCN_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
-define( 'APRCN_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
-define( 'APRCN_PLUGIN_BASENAME', plugin_basename( __FILE__ ) );
+define( 'APPRCO_PLUGIN_VERSION', '1.1.2' );
+define( 'APPRCO_PLUGIN_FILE', __FILE__ );
+define( 'APPRCO_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
+define( 'APPRCO_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
+define( 'APPRCO_PLUGIN_BASENAME', plugin_basename( __FILE__ ) );
 
 // Include required files
-require_once APRCN_PLUGIN_DIR . 'includes/class-apprenticeship-connect.php';
-require_once APRCN_PLUGIN_DIR . 'includes/class-apprenticeship-connect-admin.php';
-require_once APRCN_PLUGIN_DIR . 'includes/class-apprenticeship-connect-setup-wizard.php';
+require_once APPRCO_PLUGIN_DIR . 'includes/class-apprco-core.php';
+require_once APPRCO_PLUGIN_DIR . 'includes/class-apprco-admin.php';
+require_once APPRCO_PLUGIN_DIR . 'includes/class-apprco-setup-wizard.php';
 
 /**
  * Main plugin class
  */
-class ApprenticeshipConnect {
+class Apprco_Connector {
     
     /**
      * Plugin instance
@@ -76,8 +76,8 @@ class ApprenticeshipConnect {
     public function init() {
         // Initialize admin
         if ( is_admin() ) {
-            new ApprenticeshipConnectAdmin();
-            new ApprenticeshipConnectSetupWizard();
+            new Apprco_Admin();
+            new Apprco_Setup_Wizard();
         }
         
         // Register custom post type
@@ -87,7 +87,7 @@ class ApprenticeshipConnect {
         $this->schedule_cron_job();
         
         // Add shortcode
-        add_shortcode( 'apprenticeship_vacancies', array( $this, 'vacancies_shortcode' ) );
+        add_shortcode( 'apprco_vacancies', array( $this, 'vacancies_shortcode' ) );
 
     }
     
@@ -102,14 +102,14 @@ class ApprenticeshipConnect {
      * Allow overriding options for a one-off sync (used by Test & Sync without saving)
      */
     public function override_options_for_sync( array $overrides ): void {
-        ApprenticeshipConnectCore::get_instance()->override_options_for_sync($overrides);
+        Apprco_Core::get_instance()->override_options_for_sync($overrides);
     }
 
     /**
      * Manual sync function
      */
     public function manual_sync() {
-        return ApprenticeshipConnectCore::get_instance()->manual_sync();
+        return Apprco_Core::get_instance()->manual_sync();
     }
 
     /**
@@ -123,7 +123,7 @@ class ApprenticeshipConnect {
         flush_rewrite_rules();
         
         // Set activation flag
-        update_option( 'ac_plugin_activated', true );
+        update_option( 'apprco_plugin_activated', true );
     }
     
     /**
@@ -131,9 +131,9 @@ class ApprenticeshipConnect {
      */
     public function deactivate() {
         // Clear cron schedule
-        $timestamp = wp_next_scheduled( 'aprcn_daily_fetch_vacancies' );
+        $timestamp = wp_next_scheduled( 'apprco_daily_fetch_vacancies' );
         if ( $timestamp ) {
-            wp_unschedule_event( $timestamp, 'aprcn_daily_fetch_vacancies' );
+            wp_unschedule_event( $timestamp, 'apprco_daily_fetch_vacancies' );
         }
         
         // Flush rewrite rules
@@ -157,7 +157,7 @@ class ApprenticeshipConnect {
             'show_apply_button' => true,
         );
         
-        add_option( 'aprcn_plugin_options', $default_options );
+        add_option( 'apprco_plugin_options', $default_options );
     }
     
     /**
@@ -217,14 +217,14 @@ class ApprenticeshipConnect {
             'show_in_rest'          => true,
         );
         
-        register_post_type( 'vacancy', $args );
+        register_post_type( 'apprco_vacancy', $args );
     }
     
     /**
      * Schedule the API fetch function using WP-Cron
      */
     public function schedule_cron_job() {
-        $event_hook = 'aprcn_daily_fetch_vacancies';
+        $event_hook = 'apprco_daily_fetch_vacancies';
         
         if ( ! wp_next_scheduled( $event_hook ) ) {
             wp_schedule_event( time(), 'daily', $event_hook );
@@ -235,7 +235,7 @@ class ApprenticeshipConnect {
      * Shortcode to display vacancies
      */
     public function vacancies_shortcode( $atts ) {
-        $options = get_option( 'aprcn_plugin_options', array() );
+        $options = get_option( 'apprco_plugin_options', array() );
         
         // Use only settings, no shortcode parameters
         $display_settings = array(
@@ -247,7 +247,7 @@ class ApprenticeshipConnect {
         );
         
         $args = array(
-            'post_type'      => 'vacancy',
+            'post_type'      => 'apprco_vacancy',
             'post_status'    => 'publish',
             'posts_per_page' => absint( $display_settings['count'] ),
             'orderby'        => 'date', // Use native post date for sorting
@@ -259,7 +259,7 @@ class ApprenticeshipConnect {
         ob_start();
         
         if ( $vacancies_query->have_posts() ) {
-            echo '<div class="aprcn-vacancies-list">';
+            echo '<div class="apprco-vacancies-list">';
             while ( $vacancies_query->have_posts() ) : $vacancies_query->the_post();
                 $this->display_vacancy_item( $display_settings );
             endwhile;
@@ -277,16 +277,16 @@ class ApprenticeshipConnect {
      */
     private function display_vacancy_item( $display_settings ) {
         $title = get_the_title();
-        $vacancy_url = get_post_meta( get_the_ID(), '_vacancy_url', true );
-        $short_description = get_post_meta( get_the_ID(), '_vacancy_description_short', true );
-        $employer_name = get_post_meta( get_the_ID(), '_employer_name', true );
-        $postcode = get_post_meta( get_the_ID(), '_postcode', true );
-        $closing_date = get_post_meta( get_the_ID(), '_closing_date', true );
+        $vacancy_url = get_post_meta( get_the_ID(), '_apprco_vacancy_url', true );
+        $short_description = get_post_meta( get_the_ID(), '_apprco_vacancy_description_short', true );
+        $employer_name = get_post_meta( get_the_ID(), '_apprco_employer_name', true );
+        $postcode = get_post_meta( get_the_ID(), '_apprco_postcode', true );
+        $closing_date = get_post_meta( get_the_ID(), '_apprco_closing_date', true );
         
-        echo '<div class="aprcn-vacancy-item">';
+        echo '<div class="apprco-vacancy-item">';
         echo '<h3><a href="' . esc_url( $vacancy_url ) . '" target="_blank">' . esc_html( $title ) . '</a></h3>';
         if ( $display_settings['show_employer'] && $employer_name ) {
-            echo '<p class="aprcn-employer"><strong>' . esc_html__( 'Employer:', 'apprenticeship-connect' ) . '</strong> ' . esc_html( $employer_name );
+            echo '<p class="apprco-employer"><strong>' . esc_html__( 'Employer:', 'apprenticeship-connect' ) . '</strong> ' . esc_html( $employer_name );
             if ( $display_settings['show_location'] && $postcode ) {
                 echo ' - ' . esc_html( $postcode );
             }
@@ -294,18 +294,18 @@ class ApprenticeshipConnect {
         }
         
         if ( $short_description ) {
-            echo '<p class="aprcn-description">' . wp_kses_post( $short_description ) . '</p>';
+            echo '<p class="apprco-description">' . wp_kses_post( $short_description ) . '</p>';
         }
         
         if ( $display_settings['show_closing_date'] && $closing_date ) {
-            echo '<p class="aprcn-closing-date"><strong>' . esc_html__( 'Closing Date:', 'apprenticeship-connect' ) . '</strong> ' . esc_html( gmdate( 'F j, Y', strtotime( $closing_date ) ) ) . '</p>';
+            echo '<p class="apprco-closing-date"><strong>' . esc_html__( 'Closing Date:', 'apprenticeship-connect' ) . '</strong> ' . esc_html( gmdate( 'F j, Y', strtotime( $closing_date ) ) ) . '</p>';
         }
         if ( $display_settings['show_apply_button'] ) {
-            echo '<p class="aprcn-apply-link"><a href="' . esc_url( $vacancy_url ) . '" target="_blank" class="aprcn-apply-button">' . esc_html__( 'Apply on Apprenticeships Website &raquo;', 'apprenticeship-connect' ) . '</a></p>';
+            echo '<p class="apprco-apply-link"><a href="' . esc_url( $vacancy_url ) . '" target="_blank" class="apprco-apply-button">' . esc_html__( 'Apply on Apprenticeships Website &raquo;', 'apprenticeship-connect' ) . '</a></p>';
         }
         echo '</div>';
     }
 }
 
 // Initialize the plugin
-ApprenticeshipConnect::get_instance();
+Apprco_Connector::get_instance();

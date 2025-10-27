@@ -10,7 +10,7 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 /**
  * Main plugin functionality class
  */
-class ApprenticeshipConnectCore {
+class Apprco_Core {
     
     /**
      * Plugin options
@@ -36,7 +36,7 @@ class ApprenticeshipConnectCore {
      * Constructor
      */
     private function __construct() {
-        $this->options = get_option( 'aprcn_plugin_options', array() );
+        $this->options = get_option( 'apprco_plugin_options', array() );
         $this->init_hooks();
     }
     
@@ -44,7 +44,7 @@ class ApprenticeshipConnectCore {
      * Initialize hooks
      */
     private function init_hooks() {
-        add_action( 'aprcn_daily_fetch_vacancies', array( $this, 'fetch_and_save_vacancies' ) );
+        add_action( 'apprco_daily_fetch_vacancies', array( $this, 'fetch_and_save_vacancies' ) );
         add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
     }
     
@@ -52,7 +52,7 @@ class ApprenticeshipConnectCore {
      * Enqueue scripts and styles
      */
     public function enqueue_scripts() {
-        wp_enqueue_style( 'apprenticeship-connect', APRCN_PLUGIN_URL . 'assets/css/apprenticeship-connect.css', array(), APRCN_PLUGIN_VERSION );
+        wp_enqueue_style( 'apprco-style', APPRCO_PLUGIN_URL . 'assets/css/apprco.css', array(), APPRCO_PLUGIN_VERSION );
     }
     
     /**
@@ -78,7 +78,7 @@ class ApprenticeshipConnectCore {
         $this->delete_old_vacancies( $existing_vacancy_references, $api_current_references );
         
         // Update last sync time
-        update_option( 'aprcn_last_sync', current_time( 'timestamp' ) );
+        update_option( 'apprco_last_sync', current_time( 'timestamp' ) );
 
         return true;
     }
@@ -87,19 +87,19 @@ class ApprenticeshipConnectCore {
      * Get existing vacancy references
      */
     private function get_existing_vacancy_references() {
-        $cache_key = 'existing_vacancy_references';
+        $cache_key = 'apprco_existing_vacancy_references';
         $cached_results = wp_cache_get( $cache_key );
 
         if ( false === $cached_results ) {
             $results = array();
             $query = new WP_Query(
                 array(
-                    'post_type'      => 'vacancy',
+                    'post_type'      => 'apprco_vacancy',
                     'post_status'    => 'any',
                     'posts_per_page' => -1,
                     'meta_query'     => array(
                         array(
-                            'key'     => '_vacancy_reference',
+                            'key'     => '_apprco_vacancy_reference',
                             'compare' => 'EXISTS',
                         ),
                     ),
@@ -108,7 +108,7 @@ class ApprenticeshipConnectCore {
 
             if ( $query->have_posts() ) {
                 foreach ( $query->posts as $post ) {
-                    $ref = get_post_meta( $post->ID, '_vacancy_reference', true );
+                    $ref = get_post_meta( $post->ID, '_apprco_vacancy_reference', true );
                     if ( $ref ) {
                         $results[ $ref ] = $post->ID;
                     }
@@ -182,7 +182,7 @@ class ApprenticeshipConnectCore {
                     'post_title'    => isset( $vacancy->title ) ? wp_strip_all_tags( $vacancy->title ) : '',
                     'post_content'  => isset( $vacancy->fullDescription ) ? wp_kses_post( $vacancy->fullDescription ) : '',
                     'post_status'   => 'publish',
-                    'post_type'     => 'vacancy',
+                    'post_type'     => 'apprco_vacancy',
                     'post_author'   => 1,
                 );
                 
@@ -210,40 +210,40 @@ class ApprenticeshipConnectCore {
         $meta_fields = array();
         
         if ( isset( $vacancy->vacancyReference ) ) {
-            $meta_fields['_vacancy_reference'] = $vacancy->vacancyReference;
+            $meta_fields['_apprco_vacancy_reference'] = $vacancy->vacancyReference;
         }
         if ( isset( $vacancy->description ) ) {
-            $meta_fields['_vacancy_description_short'] = wp_kses_post( $vacancy->description );
+            $meta_fields['_apprco_vacancy_description_short'] = wp_kses_post( $vacancy->description );
         }
         if ( isset( $vacancy->numberOfPositions ) ) {
-            $meta_fields['_number_of_positions'] = $vacancy->numberOfPositions;
+            $meta_fields['_apprco_number_of_positions'] = $vacancy->numberOfPositions;
         }
         if ( isset( $vacancy->postedDate ) ) {
-            $meta_fields['_posted_date'] = $vacancy->postedDate;
+            $meta_fields['_apprco_posted_date'] = $vacancy->postedDate;
         }
         if ( isset( $vacancy->closingDate ) ) {
-            $meta_fields['_closing_date'] = $vacancy->closingDate;
+            $meta_fields['_apprco_closing_date'] = $vacancy->closingDate;
         }
         if ( isset( $vacancy->startDate ) ) {
-            $meta_fields['_start_date'] = $vacancy->startDate;
+            $meta_fields['_apprco_start_date'] = $vacancy->startDate;
         }
         if ( isset( $vacancy->hoursPerWeek ) ) {
-            $meta_fields['_hours_per_week'] = $vacancy->hoursPerWeek;
+            $meta_fields['_apprco_hours_per_week'] = $vacancy->hoursPerWeek;
         }
         if ( isset( $vacancy->expectedDuration ) ) {
-            $meta_fields['_expected_duration'] = $vacancy->expectedDuration;
+            $meta_fields['_apprco_expected_duration'] = $vacancy->expectedDuration;
         }
         if ( isset( $vacancy->employerName ) ) {
-            $meta_fields['_employer_name'] = wp_strip_all_tags( $vacancy->employerName );
+            $meta_fields['_apprco_employer_name'] = wp_strip_all_tags( $vacancy->employerName );
         }
         if ( isset( $vacancy->vacancyUrl ) ) {
-            $meta_fields['_vacancy_url'] = esc_url( $vacancy->vacancyUrl );
+            $meta_fields['_apprco_vacancy_url'] = esc_url( $vacancy->vacancyUrl );
         }
         if ( isset( $vacancy->apprenticeshipLevel ) ) {
-            $meta_fields['_apprenticeship_level'] = wp_strip_all_tags( $vacancy->apprenticeshipLevel );
+            $meta_fields['_apprco_apprenticeship_level'] = wp_strip_all_tags( $vacancy->apprenticeshipLevel );
         }
         if ( isset( $vacancy->providerName ) ) {
-            $meta_fields['_provider_name'] = wp_strip_all_tags( $vacancy->providerName );
+            $meta_fields['_apprco_provider_name'] = wp_strip_all_tags( $vacancy->providerName );
         }
         
         foreach ( $meta_fields as $key => $value ) {
@@ -253,45 +253,45 @@ class ApprenticeshipConnectCore {
         // Save wage information
         if ( isset( $vacancy->wage ) && is_object( $vacancy->wage ) ) {
             if ( isset( $vacancy->wage->wageType ) ) {
-                update_post_meta( $post_id, '_wage_type', wp_strip_all_tags( $vacancy->wage->wageType ) );
+                update_post_meta( $post_id, '_apprco_wage_type', wp_strip_all_tags( $vacancy->wage->wageType ) );
             }
             if ( isset( $vacancy->wage->wageAmount ) ) {
-                update_post_meta( $post_id, '_wage_amount', $vacancy->wage->wageAmount );
+                update_post_meta( $post_id, '_apprco_wage_amount', $vacancy->wage->wageAmount );
             }
             if ( isset( $vacancy->wage->wageUnit ) ) {
-                update_post_meta( $post_id, '_wage_unit', wp_strip_all_tags( $vacancy->wage->wageUnit ) );
+                update_post_meta( $post_id, '_apprco_wage_unit', wp_strip_all_tags( $vacancy->wage->wageUnit ) );
             }
             if ( isset( $vacancy->wage->wageAdditionalInformation ) ) {
-                update_post_meta( $post_id, '_wage_additional_information', wp_kses_post( $vacancy->wage->wageAdditionalInformation ) );
+                update_post_meta( $post_id, '_apprco_wage_additional_information', wp_kses_post( $vacancy->wage->wageAdditionalInformation ) );
             }
         }
         
         // Save address information
         if ( isset( $vacancy->address ) && is_object( $vacancy->address ) ) {
             if ( isset( $vacancy->address->addressLine1 ) ) {
-                update_post_meta( $post_id, '_address_line_1', wp_strip_all_tags( $vacancy->address->addressLine1 ) );
+                update_post_meta( $post_id, '_apprco_address_line_1', wp_strip_all_tags( $vacancy->address->addressLine1 ) );
             }
             if ( isset( $vacancy->address->postcode ) ) {
-                update_post_meta( $post_id, '_postcode', wp_strip_all_tags( $vacancy->address->postcode ) );
+                update_post_meta( $post_id, '_apprco_postcode', wp_strip_all_tags( $vacancy->address->postcode ) );
             }
             if ( isset( $vacancy->address->latitude ) ) {
-                update_post_meta( $post_id, '_latitude', $vacancy->address->latitude );
+                update_post_meta( $post_id, '_apprco_latitude', $vacancy->address->latitude );
             }
             if ( isset( $vacancy->address->longitude ) ) {
-                update_post_meta( $post_id, '_longitude', $vacancy->address->longitude );
+                update_post_meta( $post_id, '_apprco_longitude', $vacancy->address->longitude );
             }
         }
         
         // Save course information
         if ( isset( $vacancy->course ) && is_object( $vacancy->course ) ) {
             if ( isset( $vacancy->course->title ) ) {
-                update_post_meta( $post_id, '_course_title', wp_strip_all_tags( $vacancy->course->title ) );
+                update_post_meta( $post_id, '_apprco_course_title', wp_strip_all_tags( $vacancy->course->title ) );
             }
             if ( isset( $vacancy->course->level ) ) {
-                update_post_meta( $post_id, '_course_level', $vacancy->course->level );
+                update_post_meta( $post_id, '_apprco_course_level', $vacancy->course->level );
             }
             if ( isset( $vacancy->course->route ) ) {
-                update_post_meta( $post_id, '_course_route', wp_strip_all_tags( $vacancy->course->route ) );
+                update_post_meta( $post_id, '_apprco_course_route', wp_strip_all_tags( $vacancy->course->route ) );
             }
         }
     }
@@ -322,8 +322,8 @@ class ApprenticeshipConnectCore {
      * Get sync status
      */
     public function get_sync_status() {
-        $last_sync = get_option( 'aprcn_last_sync' );
-        $total_vacancies = wp_count_posts( 'vacancy' );
+        $last_sync = get_option( 'apprco_last_sync' );
+        $total_vacancies = wp_count_posts( 'apprco_vacancy' );
         
         return array(
             'last_sync' => $last_sync,
@@ -352,14 +352,14 @@ class ApprenticeshipConnectCore {
     public function add_admin_menu() {
         $completed = ! empty( $this->options['api_subscription_key'] ) && ! empty( $this->options['api_base_url'] );
 
-        $force_show = isset( $_GET['page'], $_GET['step'], $_GET['_wpnonce'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_GET['_wpnonce'] ) ), 'aprcn_setup_nonce' ) && $_GET['page'] === 'apprenticeship-connect-setup' && absint( $_GET['step'] ) === 5;
+        $force_show = isset( $_GET['page'], $_GET['step'], $_GET['_wpnonce'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_GET['_wpnonce'] ) ), 'apprco_setup_nonce' ) && $_GET['page'] === 'apprco-setup' && absint( $_GET['step'] ) === 5;
         if ( ! $completed || $force_show ) {
             add_submenu_page(
-                'apprenticeship-connect',
+                'apprco-dashboard',
                 __( 'Setup Wizard', 'apprenticeship-connect' ),
                 __( 'Setup Wizard', 'apprenticeship-connect' ),
                 'manage_options',
-                'apprenticeship-connect-setup',
+                'apprco-setup',
                 array( $this, 'setup_page' )
             );
         }

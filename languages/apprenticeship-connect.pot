@@ -2,7 +2,7 @@
 # This file is distributed under the GPL v2 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: Apprenticeship Connect 1.1.0\n"
+"Project-Id-Version: Apprenticeship Connect 1.1.2\n"
 "Report-Msgid-Bugs-To: https://epark.ir\n"
 "POT-Creation-Date: 2024-01-01 12:00+0000\n"
 "MIME-Version: 1.0\n"

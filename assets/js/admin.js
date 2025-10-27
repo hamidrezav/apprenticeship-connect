@@ -5,22 +5,22 @@
 jQuery(document).ready(function($) {
     
     // Manual sync functionality
-    $('#aprcn-manual-sync').on('click', function(e) {
+    $('#apprco-manual-sync').on('click', function(e) {
         e.preventDefault();
         
         var $button = $(this);
         var originalText = $button.text();
         
         // Disable button and show loading
-        $button.prop('disabled', true).text(aprcnAjax.strings.syncing);
+        $button.prop('disabled', true).text(apprcoAjax.strings.syncing);
         
         // Make AJAX call
         $.ajax({
-            url: aprcnAjax.ajaxurl,
+            url: apprcoAjax.ajaxurl,
             type: 'POST',
             data: {
-                action: 'aprcn_manual_sync',
-                nonce: aprcnAjax.nonce
+                action: 'apprco_manual_sync',
+                nonce: apprcoAjax.nonce
             },
             success: function(response) {
                 if (response.success) {
@@ -34,7 +34,7 @@ jQuery(document).ready(function($) {
                 }
             },
             error: function() {
-                showNotice(aprcnAjax.strings.error, 'error');
+                showNotice(apprcoAjax.strings.error, 'error');
             },
             complete: function() {
                 // Re-enable button
@@ -44,22 +44,22 @@ jQuery(document).ready(function($) {
     });
     
     // Test API functionality
-    $('#aprcn-test-api').on('click', function(e) {
+    $('#apprco-test-api').on('click', function(e) {
         e.preventDefault();
         
         var $button = $(this);
         var originalText = $button.text();
         
         // Disable button and show loading
-        $button.prop('disabled', true).text(aprcnAjax.strings.testing);
+        $button.prop('disabled', true).text(apprcoAjax.strings.testing);
         
         // Make AJAX call
         $.ajax({
-            url: aprcnAjax.ajaxurl,
+            url: apprcoAjax.ajaxurl,
             type: 'POST',
             data: {
-                action: 'aprcn_test_api',
-                nonce: aprcnAjax.nonce
+                action: 'apprco_test_api',
+                nonce: apprcoAjax.nonce
             },
             success: function(response) {
                 if (response.success) {
@@ -69,7 +69,7 @@ jQuery(document).ready(function($) {
                 }
             },
             error: function() {
-                showNotice(aprcnAjax.strings.error, 'error');
+                showNotice(apprcoAjax.strings.error, 'error');
             },
             complete: function() {
                 // Re-enable button
@@ -79,19 +79,14 @@ jQuery(document).ready(function($) {
     });
     
     // Test & Sync API functionality
-    $(document).on('click', '#aprcn-test-and-sync', function(e) {
+    $(document).on('click', '#apprco-test-and-sync', function(e) {
         e.preventDefault();
         
         var $button = $(this);
         var originalText = $button.text();
         
-        // Create or select a result container under the API section
-        var $apiFieldRow = $('#api_ukprn').closest('tr');
-        var $result = $('#aprcn-test-sync-result');
-        if ($result.length === 0) {
-            $result = $('<div id="aprcn-test-sync-result" style="margin-top: 10px;"></div>');
-            $apiFieldRow.after($('<tr><td colspan="2"></td></tr>').find('td').append($result).end());
-        }
+        // The result container is now part of the HTML, so we just select it.
+        var $result = $('#apprco-test-sync-result');
         
         // Collect current API form values so saving isn't required
         var apiBaseUrl = $('#api_base_url').val();
@@ -104,36 +99,38 @@ jQuery(document).ready(function($) {
         
         // Make AJAX call to test & sync using current values
         $.ajax({
-            url: aprcnAjax.ajaxurl,
+            url: apprcoAjax.ajaxurl,
             type: 'POST',
             data: {
-                action: 'aprcn_test_and_sync',
-                nonce: aprcnAjax.nonce,
+                action: 'apprco_test_and_sync',
+                nonce: apprcoAjax.nonce,
                 api_base_url: apiBaseUrl,
                 api_subscription_key: apiKey,
                 api_ukprn: ukprn
             },
             success: function(response) {
                 if (response.success) {
-                    $result.html('<p style="color: #46b450; font-weight: bold;">' + response.data + '</p>');
+                    $('#apprco-test-sync-result').html('<p style="color: #46b450; font-weight: bold;">' + response.data.message + '</p>');
+                    $('#apprco-last-sync').text(response.data.last_sync);
+                    $('#apprco-total-vacancies').text(response.data.total_vacancies);
                     // Persist the successful API settings via AJAX save
                     $.ajax({
-                        url: aprcnAjax.ajaxurl,
+                        url: apprcoAjax.ajaxurl,
                         type: 'POST',
                         data: {
-                            action: 'aprcn_save_api_settings',
-                            nonce: aprcnAjax.nonce,
+                            action: 'apprco_save_api_settings',
+                            nonce: apprcoAjax.nonce,
                             api_base_url: apiBaseUrl,
                             api_subscription_key: apiKey,
                             api_ukprn: ukprn
                         }
                     });
                 } else {
-                    $result.html('<p style="color: #dc3232; font-weight: bold;">Error: ' + response.data + '</p>');
+                    $('#apprco-test-sync-result').html('<p style="color: #dc3232; font-weight: bold;">Error: ' + response.data + '</p>');
                 }
             },
             error: function() {
-                $result.html('<p style="color: #dc3232; font-weight: bold;">Error: ' + aprcnAjax.strings.error + '</p>');
+                $result.html('<p style="color: #dc3232; font-weight: bold;">Error: ' + apprcoAjax.strings.error + '</p>');
             },
             complete: function() {
                 $button.prop('disabled', false).text(originalText);
@@ -143,11 +140,11 @@ jQuery(document).ready(function($) {
     
     // Show notice function
     function showNotice(message, type) {
-        var noticeClass = 'aprcn-notice aprcn-notice-' + type;
+        var noticeClass = 'apprco-notice apprco-notice-' + type;
         var $notice = $('<div class="' + noticeClass + '">' + message + '</div>');
         
         // Remove existing notices
-        $('.aprcn-notice').remove();
+        $('.apprco-notice').remove();
         
         // Add new notice at the top of the page
         $('.wrap h1').after($notice);
@@ -156,20 +153,20 @@ jQuery(document).ready(function($) {
     }
     
     // Setup wizard functionality
-    if ($('.aprcn-setup-progress').length) {
+    if ($('.apprco-setup-progress').length) {
         // Auto-save form data on input change
-        $('.aprcn-setup-step input, .aprcn-setup-step select, .aprcn-setup-step textarea').on('change', function() {
+        $('.apprco-setup-step input, .apprco-setup-step select, .apprco-setup-step textarea').on('change', function() {
             var $form = $(this).closest('form');
             var formData = $form.serialize();
             
             // Save to localStorage
-            localStorage.setItem('aprcn_setup_form_data', formData);
+            localStorage.setItem('apprco_setup_form_data', formData);
         });
         
         // Restore form data on page load
-        var savedData = localStorage.getItem('aprcn_setup_form_data');
+        var savedData = localStorage.getItem('apprco_setup_form_data');
         if (savedData) {
-            var $form = $('.aprcn-setup-step form');
+            var $form = $('.apprco-setup-step form');
             var params = new URLSearchParams(savedData);
             
             params.forEach(function(value, key) {
@@ -186,7 +183,7 @@ jQuery(document).ready(function($) {
         
         // Clear saved data when setup is complete
         if (window.location.search.includes('step=5')) {
-            localStorage.removeItem('aprcn_setup_form_data');
+            localStorage.removeItem('apprco_setup_form_data');
         }
     }
     
@@ -220,7 +217,7 @@ jQuery(document).ready(function($) {
     });
     
     // Copy shortcode to clipboard
-    $('.ac-shortcode-box code').on('click', function() {
+    $('.apprco-shortcode-box code').on('click', function() {
         var text = $(this).text();
         
         // Create temporary textarea
@@ -241,14 +238,14 @@ jQuery(document).ready(function($) {
     
     // Add copied style
     $('<style>')
-        .text('.ac-shortcode-box code.copied { background: #46b450; color: #fff; }')
+        .text('.apprco-shortcode-box code.copied { background: #46b450; color: #fff; }')
         .appendTo('head');
     
     // Auto-refresh status every 30 seconds
-    if ($('#aprcn-manual-sync').length) {
+    if ($('#apprco-manual-sync').length) {
         setInterval(function() {
             // Update last sync time if it exists
-            var $lastSync = $('.ac-status-box p:contains("Last Sync")');
+            var $lastSync = $('.apprco-status-box p:contains("Last Sync")');
             if ($lastSync.length) {
                 // This would require an AJAX call to get updated status
                 // For now, just update the display
@@ -257,7 +254,7 @@ jQuery(document).ready(function($) {
     }
     
     // Confirm before leaving setup wizard
-    if ($('.aprcn-setup-progress').length) {
+    if ($('.apprco-setup-progress').length) {
         window.onbeforeunload = function() {
             return 'Are you sure you want to leave? Your progress will be saved.';
         };
@@ -271,7 +268,7 @@ jQuery(document).ready(function($) {
     // Tooltip functionality
     $('[data-tooltip]').on('mouseenter', function() {
         var tooltip = $(this).data('tooltip');
-        var $tooltip = $('<div class="ac-tooltip">' + tooltip + '</div>');
+        var $tooltip = $('<div class="apprco-tooltip">' + tooltip + '</div>');
         
         $('body').append($tooltip);
         
@@ -285,13 +282,13 @@ jQuery(document).ready(function($) {
             zIndex: 9999
         });
     }).on('mouseleave', function() {
-        $('.ac-tooltip').remove();
+        $('.apprco-tooltip').remove();
     });
     
     // Add tooltip styles
     $('<style>')
         .text(`
-            .aprcn-tooltip {
+            .apprco-tooltip {
                 background: #333;
                 color: #fff;
                 padding: 8px 12px;
@@ -300,7 +297,7 @@ jQuery(document).ready(function($) {
                 max-width: 200px;
                 box-shadow: 0 2px 8px rgba(0,0,0,0.3);
             }
-            .aprcn-tooltip::after {
+            .apprco-tooltip::after {
                 content: '';
                 position: absolute;
                 top: 100%;
@@ -315,9 +312,9 @@ jQuery(document).ready(function($) {
     // Responsive admin sidebar
     function handleResponsiveSidebar() {
         if ($(window).width() <= 768) {
-            $('.aprcn-admin-sidebar').insertAfter('.aprcn-admin-main');
+            $('.apprco-admin-sidebar').insertAfter('.apprco-admin-main');
         } else {
-            $('.aprcn-admin-sidebar').insertBefore('.aprcn-admin-main');
+            $('.apprco-admin-sidebar').insertBefore('.apprco-admin-main');
         }
     }
     
@@ -325,17 +322,17 @@ jQuery(document).ready(function($) {
     handleResponsiveSidebar();
     
     // Collapsible sections
-    $('.aprcn-shortcode-box h3, .aprcn-status-box h3').on('click', function() {
+    $('.apprco-shortcode-box h3, .apprco-status-box h3').on('click', function() {
         var $section = $(this).siblings();
         $section.slideToggle();
         $(this).toggleClass('collapsed');
     });
     
     // Add collapse indicator
-    $('.aprcn-shortcode-box h3, .aprcn-status-box h3').append('<span class="dashicons dashicons-arrow-down" style="float: right; cursor: pointer;"></span>');
+    $('.apprco-shortcode-box h3, .apprco-status-box h3').append('<span class="dashicons dashicons-arrow-down" style="float: right; cursor: pointer;"></span>');
     
     // Update collapse icon
-    $('.aprcn-shortcode-box h3, .aprcn-status-box h3').on('click', function() {
+    $('.apprco-shortcode-box h3, .apprco-status-box h3').on('click', function() {
         var $icon = $(this).find('.dashicons');
         if ($(this).hasClass('collapsed')) {
             $icon.removeClass('dashicons-arrow-up').addClass('dashicons-arrow-down');
@@ -354,4 +351,4 @@ jQuery(document).ready(function($) {
         var checked = $('#create_page').is(':checked');
         $('#page_title, #page_slug').prop('disabled', !checked);
     }
-}); 
+});

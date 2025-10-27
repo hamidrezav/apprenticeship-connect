@@ -14,15 +14,15 @@ if ( ! defined( 'WP_UNINSTALL_PLUGIN' ) ) {
 }
 
 // Delete plugin options
-delete_option( 'aprcn_plugin_options' );
-delete_option( 'aprcn_last_sync' );
-delete_option( 'aprcn_setup_completed' );
-delete_option( 'aprcn_plugin_activated' );
-delete_option( 'aprcn_vacancy_page_id' );
+delete_option( 'apprco_plugin_options' );
+delete_option( 'apprco_last_sync' );
+delete_option( 'apprco_setup_completed' );
+delete_option( 'apprco_plugin_activated' );
+delete_option( 'apprco_vacancy_page_id' );
 
 // Delete all vacancy posts
 $vacancies = get_posts( array(
-    'post_type'      => 'vacancy',
+    'post_type'      => 'apprco_vacancy',
     'post_status'    => 'any',
     'numberposts'    => -1,
     'fields'         => 'ids',
@@ -33,7 +33,7 @@ foreach ( $vacancies as $vacancy_id ) {
 }
 
 // Clear any scheduled cron events
-wp_clear_scheduled_hook( 'aprcn_daily_fetch_vacancies' );
+wp_clear_scheduled_hook( 'apprco_daily_fetch_vacancies' );
 
 // Flush rewrite rules
-flush_rewrite_rules(); 
+flush_rewrite_rules();

@@ -10,7 +10,7 @@ if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 /**
  * Setup wizard class
  */
-class ApprenticeshipConnectSetupWizard {
+class Apprco_Setup_Wizard {
     
     /**
      * Constructor
@@ -32,13 +32,13 @@ class ApprenticeshipConnectSetupWizard {
      */
     public function add_setup_page() {
         global $submenu;
-        $completed = get_option( 'aprcn_setup_completed' );
-        $force_show = isset( $_GET['page'], $_GET['step'], $_GET['_wpnonce'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_GET['_wpnonce'] ) ), 'aprcn_setup_wizard' ) && sanitize_text_field( wp_unslash( $_GET['page'] ) ) === 'apprenticeship-connect-setup' && absint( sanitize_text_field( wp_unslash( $_GET['step'] ) ) ) === 5;
+        $completed = get_option( 'apprco_setup_completed' );
+        $force_show = isset( $_GET['page'], $_GET['step'], $_GET['_wpnonce'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_GET['_wpnonce'] ) ), 'apprco_setup_wizard' ) && sanitize_text_field( wp_unslash( $_GET['page'] ) ) === 'apprco-setup' && absint( sanitize_text_field( wp_unslash( $_GET['step'] ) ) ) === 5;
 
         // Prevent duplicate submenu entries
-        if ( isset( $submenu['apprenticeship-connect'] ) ) {
-            foreach ( $submenu['apprenticeship-connect'] as $entry ) {
-                if ( $entry[2] === 'apprenticeship-connect-setup' ) {
+        if ( isset( $submenu['apprco-dashboard'] ) ) {
+            foreach ( $submenu['apprco-dashboard'] as $entry ) {
+                if ( $entry[2] === 'apprco-setup' ) {
                     return;
                 }
             }
@@ -46,11 +46,11 @@ class ApprenticeshipConnectSetupWizard {
 
         if ( ! $completed || $force_show ) {
             add_submenu_page(
-                'apprenticeship-connect',
+                'apprco-dashboard',
                 __( 'Setup Wizard', 'apprenticeship-connect' ),
                 __( 'Setup Wizard', 'apprenticeship-connect' ),
                 'manage_options',
-                'apprenticeship-connect-setup',
+                'apprco-setup',
                 array( $this, 'setup_page' )
             );
         }
@@ -60,12 +60,12 @@ class ApprenticeshipConnectSetupWizard {
      * Setup notice
      */
     public function setup_notice() {
-        if ( ! get_option( 'aprcn_setup_completed' ) && isset( $_GET['page'], $_GET['_wpnonce'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_GET['_wpnonce'] ) ), 'aprcn_setup_wizard' ) && sanitize_text_field( wp_unslash( $_GET['page'] ) ) !== 'apprenticeship-connect-setup' ) {
+        if ( ! get_option( 'apprco_setup_completed' ) && isset( $_GET['page'], $_GET['_wpnonce'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_GET['_wpnonce'] ) ), 'apprco_setup_wizard' ) && sanitize_text_field( wp_unslash( $_GET['page'] ) ) !== 'apprco-setup' ) {
             ?>
             <div class="notice notice-warning">
                 <p>
                     <?php esc_html_e( 'Apprenticeship Connect needs to be configured. ', 'apprenticeship-connect' ); ?>
-                    <a href="<?php echo esc_url( admin_url( 'admin.php?page=apprenticeship-connect-setup' ) ); ?>">
+                    <a href="<?php echo esc_url( admin_url( 'admin.php?page=apprco-setup' ) ); ?>">
                         <?php esc_html_e( 'Run Setup Wizard', 'apprenticeship-connect' ); ?>
                     </a>
                 </p>
@@ -87,15 +87,15 @@ class ApprenticeshipConnectSetupWizard {
         
         // For steps 2-5, check if this is a legitimate access
         // Allow access if nonce is valid OR if setup has been started (options exist)
-        $has_started_setup = ! empty( get_option( 'aprcn_plugin_options', array() ) );
+        $has_started_setup = ! empty( get_option( 'apprco_plugin_options', array() ) );
         
-        if ( $step > 1 && ! $has_started_setup && ( ! isset( $_GET['_wpnonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_GET['_wpnonce'] ) ), 'aprcn_setup_wizard' ) ) ) {
+        if ( $step > 1 && ! $has_started_setup && ( ! isset( $_GET['_wpnonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_GET['_wpnonce'] ) ), 'apprco_setup_wizard' ) ) ) {
             $step = 1; // Redirect to step 1 if nonce is invalid and setup hasn't started
         }
         ?>
-        <div class="wrap aprcn-settings">
+        <div class="wrap apprco-settings">
             <h1><?php esc_html_e( 'Apprenticeship Connect Setup Wizard', 'apprenticeship-connect' ); ?></h1>
-            <div class="ac-setup-progress">
+            <div class="apprco-setup-progress">
                 <?php
                 $labels = array(
                     1 => __( 'Welcome', 'apprenticeship-connect' ),
@@ -106,11 +106,11 @@ class ApprenticeshipConnectSetupWizard {
                 );
                 foreach ( $labels as $index => $label ) {
                     $cls = $index < $step ? 'completed' : ( $index === $step ? 'current' : 'upcoming' );
-                    echo '<div class="ac-step ' . esc_attr( $cls ) . '"><span class="ac-step-index">' . esc_html( $index ) . '.</span> ' . esc_html( $label ) . '</div>';
+                    echo '<div class="apprco-step ' . esc_attr( $cls ) . '"><span class="apprco-step-index">' . esc_html( $index ) . '.</span> ' . esc_html( $label ) . '</div>';
                 }
                 ?>
             </div>
-            <div class="ac-setup-content aprcn-form">
+            <div class="apprco-setup-content apprco-form">
                 <?php
                 switch ( $step ) {
                     case 1:
@@ -140,10 +140,10 @@ class ApprenticeshipConnectSetupWizard {
      */
     private function welcome_step() {
         ?>
-        <div class="ac-setup-step">
+        <div class="apprco-setup-step">
             <h2><?php esc_html_e( 'Welcome to Apprenticeship Connect!', 'apprenticeship-connect' ); ?></h2>
 
-            <div class="ac-setup-intro">
+            <div class="apprco-setup-intro">
                 <p><?php esc_html_e( 'This wizard will help you configure Apprenticeship Connect to display apprenticeship vacancies on your website.', 'apprenticeship-connect' ); ?></p>
 
                 <h3><?php esc_html_e( 'What you\'ll need:', 'apprenticeship-connect' ); ?></h3>
@@ -162,8 +162,8 @@ class ApprenticeshipConnectSetupWizard {
                 </ul>
             </div>
             
-            <div class="ac-setup-actions">
-                <a href="<?php echo esc_url( wp_nonce_url( admin_url( 'admin.php?page=apprenticeship-connect-setup&step=2' ), 'aprcn_setup_wizard' ) ); ?>" class="button button-primary">
+            <div class="apprco-setup-actions">
+                <a href="<?php echo esc_url( wp_nonce_url( admin_url( 'admin.php?page=apprco-setup&step=2' ), 'apprco_setup_wizard' ) ); ?>" class="button button-primary">
                     <?php esc_html_e( 'Get Started', 'apprenticeship-connect' ); ?>
                 </a>
             </div>
@@ -175,19 +175,19 @@ class ApprenticeshipConnectSetupWizard {
      * API configuration step
      */
     private function api_config_step() {
-        $options = get_option( 'aprcn_plugin_options', array() );
+        $options = get_option( 'apprco_plugin_options', array() );
         
         // Check for error parameter
-        if ( isset( $_GET['error'] ) && 'missing_key' === $_GET['error'] && isset( $_GET['_wpnonce'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_GET['_wpnonce'] ) ), 'aprcn_setup_wizard' ) ) {
+        if ( isset( $_GET['error'] ) && 'missing_key' === $_GET['error'] && isset( $_GET['_wpnonce'] ) && wp_verify_nonce( sanitize_text_field( wp_unslash( $_GET['_wpnonce'] ) ), 'apprco_setup_wizard' ) ) {
             echo '<div class="notice notice-error"><p>' . esc_html__( 'API Subscription Key is required.', 'apprenticeship-connect' ) . '</p></div>';
         }
         
         ?>
-        <div class="aprcn-setup-step">
+        <div class="apprco-setup-step">
             <h2><?php esc_html_e( 'API Configuration', 'apprenticeship-connect' ); ?></h2>
 
             <form method="post" action="">
-                <?php wp_nonce_field( 'aprcn_setup_wizard', 'aprcn_setup_nonce' ); ?>
+                <?php wp_nonce_field( 'apprco_setup_wizard', 'apprco_setup_nonce' ); ?>
                 <input type="hidden" name="step" value="2" />
                 
                 <table class="form-table">
@@ -222,16 +222,16 @@ class ApprenticeshipConnectSetupWizard {
                     </tr>
                 </table>
                 
-                <div class="aprcn-test-sync-inline" style="margin-top:8px;">
-                    <button type="button" id="aprcn-test-and-sync" class="button button-primary"><?php esc_html_e( 'Test & Sync Vacancies', 'apprenticeship-connect' ); ?></button>
-                    <div id="aprcn-test-sync-result" style="margin-top:10px;"></div>
+                <div class="apprco-test-sync-inline" style="margin-top:8px;">
+                    <button type="button" id="apprco-test-and-sync" class="button button-primary"><?php esc_html_e( 'Test & Sync Vacancies', 'apprenticeship-connect' ); ?></button>
+                    <div id="apprco-test-sync-result" style="margin-top:10px;"></div>
                 </div>
                 
-                <div class="ac-setup-actions">
-                    <a href="<?php echo esc_url( wp_nonce_url( admin_url( 'admin.php?page=apprenticeship-connect-setup&step=1' ), 'aprcn_setup_wizard' ) ); ?>" class="button">
+                <div class="apprco-setup-actions">
+                    <a href="<?php echo esc_url( wp_nonce_url( admin_url( 'admin.php?page=apprco-setup&step=1' ), 'apprco_setup_wizard' ) ); ?>" class="button">
                         <?php esc_html_e( 'Previous', 'apprenticeship-connect' ); ?>
                     </a>
-                    <input type="submit" name="ac_setup_submit" value="<?php esc_html_e( 'Next', 'apprenticeship-connect' ); ?>" class="button button-primary" />
+                    <input type="submit" name="apprco_setup_submit" value="<?php esc_html_e( 'Next', 'apprenticeship-connect' ); ?>" class="button button-primary" />
                 </div>
             </form>
         </div>
@@ -242,13 +242,13 @@ class ApprenticeshipConnectSetupWizard {
      * Display settings step
      */
     private function display_settings_step() {
-        $options = get_option( 'aprcn_plugin_options', array() );
+        $options = get_option( 'apprco_plugin_options', array() );
         ?>
-        <div class="aprcn-setup-step">
+        <div class="apprco-setup-step">
             <h2><?php esc_html_e( 'Display Settings', 'apprenticeship-connect' ); ?></h2>
 
             <form method="post" action="">
-                <?php wp_nonce_field( 'aprcn_setup_wizard', 'aprcn_setup_nonce' ); ?>
+                <?php wp_nonce_field( 'apprco_setup_wizard', 'apprco_setup_nonce' ); ?>
                 <input type="hidden" name="step" value="3" />
                 
                 <table class="form-table">
@@ -290,11 +290,11 @@ class ApprenticeshipConnectSetupWizard {
                     </tr>
                 </table>
                 
-                <div class="ac-setup-actions">
-                    <a href="<?php echo esc_url( wp_nonce_url( admin_url( 'admin.php?page=apprenticeship-connect-setup&step=2' ), 'aprcn_setup_wizard' ) ); ?>" class="button">
+                <div class="apprco-setup-actions">
+                    <a href="<?php echo esc_url( wp_nonce_url( admin_url( 'admin.php?page=apprco-setup&step=2' ), 'apprco_setup_wizard' ) ); ?>" class="button">
                         <?php esc_html_e( 'Previous', 'apprenticeship-connect' ); ?>
                     </a>
-                    <input type="submit" name="ac_setup_submit" value="<?php esc_html_e( 'Next', 'apprenticeship-connect' ); ?>" class="button button-primary" />
+                    <input type="submit" name="apprco_setup_submit" value="<?php esc_html_e( 'Next', 'apprenticeship-connect' ); ?>" class="button button-primary" />
                 </div>
             </form>
         </div>
@@ -306,13 +306,13 @@ class ApprenticeshipConnectSetupWizard {
      */
     private function create_page_step() {
         ?>
-        <div class="ac-setup-step">
+        <div class="apprco-setup-step">
             <h2><?php esc_html_e( 'Create Vacancies Page', 'apprenticeship-connect' ); ?></h2>
 
             <p><?php esc_html_e( 'Would you like us to create a page to display your vacancies?', 'apprenticeship-connect' ); ?></p>
 
             <form method="post" action="">
-                <?php wp_nonce_field( 'aprcn_setup_wizard', 'aprcn_setup_nonce' ); ?>
+                <?php wp_nonce_field( 'apprco_setup_wizard', 'apprco_setup_nonce' ); ?>
                 <input type="hidden" name="step" value="4" />
                 
                 <table class="form-table">
@@ -348,11 +348,11 @@ class ApprenticeshipConnectSetupWizard {
                     </tr>
                 </table>
                 
-                <div class="ac-setup-actions">
-                    <a href="<?php echo esc_url( wp_nonce_url( admin_url( 'admin.php?page=apprenticeship-connect-setup&step=3' ), 'aprcn_setup_wizard' ) ); ?>" class="button">
+                <div class="apprco-setup-actions">
+                    <a href="<?php echo esc_url( wp_nonce_url( admin_url( 'admin.php?page=apprco-setup&step=3' ), 'apprco_setup_wizard' ) ); ?>" class="button">
                         <?php esc_html_e( 'Previous', 'apprenticeship-connect' ); ?>
                     </a>
-                    <input type="submit" name="ac_setup_submit" value="<?php esc_html_e( 'Next', 'apprenticeship-connect' ); ?>" class="button button-primary" />
+                    <input type="submit" name="apprco_setup_submit" value="<?php esc_html_e( 'Next', 'apprenticeship-connect' ); ?>" class="button button-primary" />
                 </div>
             </form>
         </div>
@@ -363,13 +363,13 @@ class ApprenticeshipConnectSetupWizard {
      * Complete step
      */
     private function complete_step() {
-        $page_id = (int) get_option( 'aprcn_vacancy_page_id' );
+        $page_id = (int) get_option( 'apprco_vacancy_page_id' );
         $page_link = $page_id ? get_permalink( $page_id ) : '';
         ?>
-        <div class="ac-setup-step">
+        <div class="apprco-setup-step">
             <h2><?php esc_html_e( 'Setup Complete!', 'apprenticeship-connect' ); ?></h2>
 
-            <div class="ac-setup-success" style="background:#fff;border:1px solid #e2e4e7;border-radius:6px;padding:16px 20px;">
+            <div class="apprco-setup-success" style="background:#fff;border:1px solid #e2e4e7;border-radius:6px;padding:16px 20px;">
                 <p style="font-size:14px;line-height:1.6;">
                     <?php esc_html_e( 'Congratulations! Apprenticeship Connect has been successfully configured.', 'apprenticeship-connect' ); ?>
                 </p>
@@ -378,7 +378,7 @@ class ApprenticeshipConnectSetupWizard {
                 <ul>
                     <li><?php esc_html_e( 'The plugin will automatically sync vacancies daily', 'apprenticeship-connect' ); ?></li>
                     <li><?php esc_html_e( 'You can Test & Sync from the settings page at any time', 'apprenticeship-connect' ); ?></li>
-                    <li><?php esc_html_e( 'Use the shortcode [apprenticeship_vacancies] to display vacancies anywhere', 'apprenticeship-connect' ); ?></li>
+                    <li><?php esc_html_e( 'Use the shortcode [apprco_vacancies] to display vacancies anywhere', 'apprenticeship-connect' ); ?></li>
                 </ul>
                 
                 <?php if ( $page_link ) : ?>
@@ -386,16 +386,16 @@ class ApprenticeshipConnectSetupWizard {
                 <?php endif; ?>
                 
                 <p class="description" style="margin-top:10px;">
-                    <a href="<?php echo esc_url( admin_url( 'admin.php?page=apprenticeship-connect-settings' ) ); ?>"><?php esc_html_e( 'Go to Settings', 'apprenticeship-connect' ); ?></a>
+                    <a href="<?php echo esc_url( admin_url( 'admin.php?page=apprco-settings' ) ); ?>"><?php esc_html_e( 'Go to Settings', 'apprenticeship-connect' ); ?></a>
                     <?php esc_html_e( ' to edit API and display options later.', 'apprenticeship-connect' ); ?>
                 </p>
             </div>
             
-            <div class="ac-setup-actions" style="margin-top:14px;">
-                <a href="<?php echo esc_url( admin_url( 'admin.php?page=apprenticeship-connect-settings' ) ); ?>" class="button button-primary">
+            <div class="apprco-setup-actions" style="margin-top:14px;">
+                <a href="<?php echo esc_url( admin_url( 'admin.php?page=apprco-settings' ) ); ?>" class="button button-primary">
                     <?php esc_html_e( 'Go to Plugin Settings', 'apprenticeship-connect' ); ?>
                 </a>
-                <a href="<?php echo esc_url( admin_url( 'edit.php?post_type=vacancy' ) ); ?>" class="button">
+                <a href="<?php echo esc_url( admin_url( 'edit.php?post_type=apprco_vacancy' ) ); ?>" class="button">
                     <?php esc_html_e( 'View Vacancies', 'apprenticeship-connect' ); ?>
                 </a>
             </div>
@@ -410,12 +410,12 @@ class ApprenticeshipConnectSetupWizard {
         // Start output buffering to prevent any output before redirect
         ob_start();
         
-        if ( ! isset( $_POST['ac_setup_submit'] ) ) {
+        if ( ! isset( $_POST['apprco_setup_submit'] ) ) {
             ob_end_clean();
             return;
         }
         
-        if ( ! isset( $_POST['aprcn_setup_nonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['aprcn_setup_nonce'] ) ), 'aprcn_setup_wizard' ) ) {
+        if ( ! isset( $_POST['apprco_setup_nonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['apprco_setup_nonce'] ) ), 'apprco_setup_wizard' ) ) {
             ob_end_clean();
             wp_die( esc_html__( 'Security check failed.', 'apprenticeship-connect' ) );
         }
@@ -429,13 +429,13 @@ class ApprenticeshipConnectSetupWizard {
         switch ( $step ) {
             case 2:
                 // Save API configuration
-                $options = get_option( 'aprcn_plugin_options', array() );
+                $options = get_option( 'apprco_plugin_options', array() );
                 
                 $api_key = isset( $_POST['api_subscription_key'] ) ? sanitize_text_field( wp_unslash( $_POST['api_subscription_key'] ) ) : '';
                 if ( empty( $api_key ) ) {
                     // Redirect back to step 2 with error
                     ob_end_clean();
-                    wp_safe_redirect( html_entity_decode( wp_nonce_url( admin_url( 'admin.php?page=apprenticeship-connect-setup&step=2&error=missing_key' ), 'aprcn_setup_wizard' ) ) );
+                    wp_safe_redirect( html_entity_decode( wp_nonce_url( admin_url( 'admin.php?page=apprco-setup&step=2&error=missing_key' ), 'apprco_setup_wizard' ) ) );
                     exit;
                 }
                 
@@ -446,16 +446,16 @@ class ApprenticeshipConnectSetupWizard {
                 if ( isset( $_POST['api_ukprn'] ) ) {
                     $options['api_ukprn'] = sanitize_text_field( wp_unslash( $_POST['api_ukprn'] ) );
                 }
-                update_option( 'aprcn_plugin_options', $options );
+                update_option( 'apprco_plugin_options', $options );
 
                 // Ensure no output has been sent before redirect
                 ob_end_clean();
-                wp_safe_redirect( html_entity_decode( wp_nonce_url( admin_url( 'admin.php?page=apprenticeship-connect-setup&step=3' ), 'aprcn_setup_wizard' ) ) );
+                wp_safe_redirect( html_entity_decode( wp_nonce_url( admin_url( 'admin.php?page=apprco-setup&step=3' ), 'apprco_setup_wizard' ) ) );
                 exit;
 
             case 3:
                 // Save display settings
-                $options = get_option( 'aprcn_plugin_options', array() );
+                $options = get_option( 'apprco_plugin_options', array() );
                 if ( isset( $_POST['display_count'] ) ) {
                     $options['display_count'] = absint( wp_unslash( $_POST['display_count'] ) );
                 }
@@ -463,11 +463,11 @@ class ApprenticeshipConnectSetupWizard {
                 $options['show_location'] = isset( $_POST['show_location'] ) && $_POST['show_location'] === '1';
                 $options['show_closing_date'] = isset( $_POST['show_closing_date'] ) && $_POST['show_closing_date'] === '1';
                 $options['show_apply_button'] = isset( $_POST['show_apply_button'] ) && $_POST['show_apply_button'] === '1';
-                update_option( 'aprcn_plugin_options', $options );
+                update_option( 'apprco_plugin_options', $options );
 
                 // Ensure no output has been sent before redirect
                 ob_end_clean();
-                wp_safe_redirect( html_entity_decode( wp_nonce_url( admin_url( 'admin.php?page=apprenticeship-connect-setup&step=4' ), 'aprcn_setup_wizard' ) ) );
+                wp_safe_redirect( html_entity_decode( wp_nonce_url( admin_url( 'admin.php?page=apprco-setup&step=4' ), 'apprco_setup_wizard' ) ) );
                 exit;
 
             case 4:
@@ -476,7 +476,7 @@ class ApprenticeshipConnectSetupWizard {
                     $page_title = isset( $_POST['page_title'] ) ? sanitize_text_field( wp_unslash( $_POST['page_title'] ) ) : '';
                     $page_slug = isset( $_POST['page_slug'] ) ? sanitize_title( wp_unslash( $_POST['page_slug'] ) ) : '';
 
-                    $page_content = '[apprenticeship_vacancies]';
+                    $page_content = '[apprco_vacancies]';
 
                     $page_id = wp_insert_post( array(
                         'post_title'    => $page_title,
@@ -487,16 +487,16 @@ class ApprenticeshipConnectSetupWizard {
                     ) );
 
                     if ( $page_id ) {
-                        update_option( 'aprcn_vacancy_page_id', $page_id );
+                        update_option( 'apprco_vacancy_page_id', $page_id );
                     }
                 }
 
                 // Mark setup as complete
-                update_option( 'aprcn_setup_completed', true );
+                update_option( 'apprco_setup_completed', true );
 
                 // Ensure no output has been sent before redirect
                 ob_end_clean();
-                wp_safe_redirect( html_entity_decode( wp_nonce_url( admin_url( 'admin.php?page=apprenticeship-connect-setup&step=5' ), 'aprcn_setup_wizard' ) ) );
+                wp_safe_redirect( html_entity_decode( wp_nonce_url( admin_url( 'admin.php?page=apprco-setup&step=5' ), 'apprco_setup_wizard' ) ) );
                 exit;
         }
         

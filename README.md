@@ -61,7 +61,7 @@ The plugin automatically syncs vacancy data once per day. You can also trigger a
 
 ### Can I customise the appearance of the vacancy listings?
 
-Yes. The vacancy listings are output with specific CSS classes (e.g., `.aprcn-vacancies-list`, `.aprcn-vacancy-item`), allowing you to add custom styles in your theme's stylesheet.
+Yes. The vacancy listings are output with specific CSS classes (e.g., `.apprco-vacancies-list`, `.apprco-vacancy-item`), allowing you to add custom styles in your theme's stylesheet.
 
 ## Screenshots
 
@@ -72,6 +72,12 @@ Yes. The vacancy listings are output with specific CSS classes (e.g., `.aprcn-va
 
 ## Changelog
 
+### 1.1.2
+- Fix: Plugin review feedback changes.
+
+### 1.1.1
+- Fix: Plugin review feedback changes.
+
 ### 1.1.0
 - Initial public release.
 - Features a step-by-step Setup Wizard for easy configuration.
@@ -80,6 +86,12 @@ Yes. The vacancy listings are output with specific CSS classes (e.g., `.aprcn-va
 - Provides a `[apprenticeship_vacancies]` shortcode for displaying listings.
 
 ## Upgrade Notice
+
+### 1.1.2
+- This version addresses feedback from the WordPress plugin review team.
+
+### 1.1.1
+- This version addresses feedback from the WordPress plugin review team.
 
 This is the initial release of Apprenticeship Connect. No upgrade notice needed.
 
